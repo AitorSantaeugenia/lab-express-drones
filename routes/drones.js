@@ -58,10 +58,18 @@ router.post("/drones/:id/edit", (req, res) => {
   const { name, propellers, maxSpeed } = req.body;
 
   Drone.findByIdAndUpdate(id, { name, propellers, maxSpeed })
-    .then((drones) => res.redirect(`/drones`))
-    .catch((error, drones) => {
+    .then(() => res.redirect(`/drones`))
+    .catch((error) => {
       console.log("Error while updating a drone ->", error);
-      res.render("drones/update-form.hbs", drones);
+
+      //ESTO AQUÍ ADENTRO PORQUÉ NOS PIDE QUE SI SALTA ERROR, RENDERIZAR OTRA VEZ, PERO PERDEMOS EL VALUE DE LOS INPUT, ASÏ QUE VOLVEMOS A
+      //HACER EL FINDBYID OTRA VEZ PARA TENER EL MISMO OBJETO EN LA MISMA VISTA (línia #68, pasamos vista y objeto con el mismo nombre que en #48)
+      Drone.findById(id)
+        .then((drones) => res.render(`drones/update-form.hbs`, drones))
+        .catch((error) => {
+          console.log("Error while updating a drone ->", error);
+        });
+      //res.render("drones/update-form.hbs", drones);
     });
 });
 
