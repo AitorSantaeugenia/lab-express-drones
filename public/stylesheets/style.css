@@ -7,7 +7,8 @@ a {
 }
 
 .container{
-  background-image: url(../images/drones.jpg);
+  background-image: url(../images/bg.jpg);
+  background-size: cover;
   min-height: 100vh;
   max-height: 100vh;
   min-width: 100vw;
